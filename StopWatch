@@ -1,0 +1,86 @@
+<html>
+<head>
+    <title>Stopwatch Application ( Using JAVASCRIPT + HTML + CSS )</title>
+    <script language="JavaScript" type="text/javascript">
+        var theResult = "";
+        window.onload=function() {  document.getElementById('morefeature').style.display = 'none'; }
+        function stopwatch(text) {
+           var d = new Date(); var h = d.getHours(); var m = d.getMinutes(); var s = d.getSeconds(); var ms = d.getMilliseconds();
+           document.stopwatchclock.stpwtch.value = + h + " : " + m + " : " + s + " : " + ms; 
+            if (text == "Start") { 
+                document.stopwatchclock.theButton.value = "Stop"; 
+                document.stopwatchclock.theButton.title = "The 'STOP' button will save the current stopwatch time in the stopwatch history, halt the stopwatch, and export the history as JSON object. A stopped stpwatch cannot be started again."; 
+                document.getElementById('morefeature').style.display = 'block';
+            }
+            if (text == "Stop") { 
+              var jsnResult = arrAdd();
+              var cnt = 0; var op= 'jeson output';
+              for (var i = 0; i < jsnResult.length; i++) {
+                  if (arr[i] !== undefined) {
+                      ++cnt; /*json process*/
+                      var j={ Record : cnt, Time : arr[i]};
+                      var dq='"';
+                      var json="{";
+                      var last=Object.keys(j).length;
+                      var count=0;
+                      for(x in j){ json += dq+x+dq+":"+dq+j[x]+dq;  count++;
+                      if(count<last)json +=",";
+                      }
+                      json+="}<br>";
+                      document.write(json);
+                  }
+              }
+          } 
+          if (document.stopwatchclock.theButton.value == "Start") { return true;  }
+          SD=window.setTimeout("stopwatch();", 100);
+          theResult = document.stopwatchclock.stpwtch.value;
+          document.stopwatchclock.stpwtch.title = "Start with current time with the format (hours:mins:secs.milliseconds)" ;
+        }
+        function resetIt() {
+            if (document.stopwatchclock.theButton.value == "Stop") { document.stopwatchclock.theButton.value = "Start"; }
+            window.clearTimeout(SD);            
+         }
+        function saveIt() {
+            var value = parseInt(document.getElementById('number').value, 10);
+            value = isNaN(value) ? 0 : value; value++;         
+            document.getElementById('number').value =  value;
+            var resultTitle = '';
+            if(value == '1'){ resultTitle = "<h3>History</h3><hr color='black'>"; } 
+            var objTo = document.getElementById('stopwatchresult')   
+            var spanTag = document.createElement("span");        
+                spanTag.id = "span"+value;        
+                spanTag.className ="stopWatchClass";         
+                spanTag.title ="The stopwatch showing current stopwatch time and a history of saved times. Each saved time are shown as total duration  (split time - stopwatch start time) and a lap duration (split time -  previous split time). And durations are shown in this format: 'hours:mins:secs.milliseconds'";         
+                spanTag.innerHTML = resultTitle +"<br/><b>Record " + value+" =</b> " + theResult + "";            
+                objTo.appendChild(spanTag);                
+           arrAdd(theResult);
+             return;
+        }        
+        var arr = Array();
+        function arrAdd(value){ arr.push(value); return arr;}
+    </script>
+<style>
+    center{ width: 50%; margin-left: 25%;}
+    .mainblock {background-color: #07c1cc;}
+    .stopWatchClass{background-color: #07c1cc; display: block;}
+    #stopwatchclock input{margin-bottom: 10px; width: 120px;}
+</style>
+</head>
+<body>
+    <center>
+        <div class="mainblock">
+    <h1><b title="Stopwatch Application ( Using JAVASCRIPT + HTML + CSS )">Stopwatch Application</b></h1>
+    <form name="stopwatchclock" id="stopwatchclock">
+       <input type="text" size="16" class="" name="stpwtch" value=" 00 : 00 : 00 : 00" title="Initially blank"/>
+       <input type="button" name="theButton" id="start" onClick="stopwatch(this.value);" value="Start" title="The 'START' button is start the stopwatch. An already started stopwatch cannot be started again."/><br />
+       <div id="morefeature">
+        <input type="button" value="Reset" id="resetme" onClick="resetIt();reset();" title="Once you will click on 'RESET' button will entirely reset the stopwatch so that it can be started again."/>
+        <input type="button" name="saver" id="split" value="SPLIT" onClick="saveIt();" title="The 'SPLIT' button will save the current stopwatch time in the stopwatch history. The stopwatch will continue to progress after split."/>
+       <div>
+       <input type="hidden" name="number" id="number" value="0" />
+      </form>
+</div>
+    <div id="stopwatchresult"></div>
+    </center>
+</body>
+</html>

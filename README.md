@@ -1,5 +1,4 @@
-# JavaScript Stop Watch Wtih Many Features
-
+# JavaScript Stop Watch 
 
 - Initially not started.
 
